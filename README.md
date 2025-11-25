@@ -23,6 +23,7 @@ This trend has been featured in:
 
 [<img src="https://upload.wikimedia.org/wikipedia/commons/7/77/The_New_York_Times_logo.png" alt="The New York Times" height="30">](https://www.nytimes.com/2025/02/20/technology/ai-silicon-valley-start-ups.html)
 [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/The_Information_logo.jpg/800px-The_Information_logo.jpg" alt="The Information" height="30">](https://www.theinformation.com/articles/why-early-stage-founders-are-opting-to-seed-strap-their-startups)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Forbes_logo.svg/320px-Forbes_logo.svg.png" alt="Forbes" height="30">](https://www.forbes.com/sites/elainepofeldt/2025/11/17/the-race-to-create-a-billion-dollar-one-person-business/)
 
 ## Qualification Criteria
 
