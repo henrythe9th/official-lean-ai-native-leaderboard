@@ -41,6 +41,27 @@
             word-break: break-word;
             margin-bottom: 4px;
         }
+        /* Phantom horizontal scrollbar that hugs the bottom of the viewport
+           so users don't have to scroll to row 48 to find a scrollbar. */
+        .leaderboard-sticky-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            height: 14px;
+            background: white;
+            border-top: 1px solid rgb(243 244 246);
+            z-index: 5;
+            scrollbar-width: thin;
+            scrollbar-color: rgb(156 163 175) transparent;
+        }
+        .leaderboard-sticky-scroll::-webkit-scrollbar { height: 10px; }
+        .leaderboard-sticky-scroll::-webkit-scrollbar-track { background: rgb(249 250 251); }
+        .leaderboard-sticky-scroll::-webkit-scrollbar-thumb {
+            background: rgb(156 163 175);
+            border-radius: 5px;
+            border: 2px solid rgb(249 250 251);
+        }
+        .leaderboard-sticky-scroll::-webkit-scrollbar-thumb:hover { background: rgb(107 114 128); }
+        .leaderboard-sticky-scroll-track { height: 1px; }
         .progress-bar-container {
             margin-top: 4px;
             position: relative;
@@ -276,7 +297,7 @@
                     </p>
                 </div>
             </header>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto" id="leaderboard-scroll">
                 <table class="w-full text-sm whitespace-nowrap">
                     <thead class="bg-green-700 text-white text-xs uppercase tracking-wide">
                         <tr>
@@ -299,6 +320,9 @@
                     </thead>
                     <tbody id="leaderboard-tbody" class="divide-y divide-gray-100"></tbody>
                 </table>
+            </div>
+            <div class="leaderboard-sticky-scroll sticky bottom-0 hidden" id="leaderboard-sticky-scroll" aria-hidden="true">
+                <div class="leaderboard-sticky-scroll-track" id="leaderboard-sticky-track"></div>
             </div>
         </section>
 
