@@ -41,6 +41,13 @@
             word-break: break-word;
             margin-bottom: 4px;
         }
+        /* Hide the native horizontal scrollbar on the table's scroll container.
+           The phantom sticky scrollbar below replaces it — showing both was
+           visually confusing. The element still scrolls programmatically and
+           via trackpad/wheel, just without a visible bar of its own. */
+        #leaderboard-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        #leaderboard-scroll::-webkit-scrollbar { display: none; }
+
         /* Phantom horizontal scrollbar that hugs the bottom of the viewport
            so users don't have to scroll to row 48 to find a scrollbar. */
         .leaderboard-sticky-scroll {
@@ -287,8 +294,10 @@
         </div>
 
 
-        <!-- Native leaderboard table (rendered from leaderboard-data.js) -->
-        <section class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 sm:mb-8">
+        <!-- Native leaderboard table (rendered from leaderboard-data.js).
+             `overflow-clip` (not `overflow-hidden`) so the inner sticky
+             scrollbar isn't trapped by an ancestor scroll container. -->
+        <section class="bg-white rounded-xl shadow-sm overflow-clip mb-6 sm:mb-8">
             <header class="px-4 sm:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                     <h2 class="text-base sm:text-lg font-semibold text-gray-900">Lean AI Native Companies</h2>
