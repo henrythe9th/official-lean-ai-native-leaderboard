@@ -178,54 +178,6 @@
     updateHeaderIndicators();
   }
 
-  // Sticky horizontal scrollbar that hugs the viewport bottom while the
-  // leaderboard is in view. Mirrors the real scroll container so dragging
-  // either thumb scrolls the table. Hides itself when the table fits.
-  function setupStickyScrollbar() {
-    const scroller = document.getElementById('leaderboard-scroll');
-    const phantom = document.getElementById('leaderboard-sticky-scroll');
-    const track = document.getElementById('leaderboard-sticky-track');
-    if (!scroller || !phantom || !track) return;
-
-    const sync = () => {
-      const overflows = scroller.scrollWidth - scroller.clientWidth > 1;
-      phantom.classList.toggle('hidden', !overflows);
-      if (overflows) {
-        track.style.width = scroller.scrollWidth + 'px';
-        // Re-align in case clientWidth changed under the user's scroll position.
-        if (Math.abs(phantom.scrollLeft - scroller.scrollLeft) > 1) {
-          phantom.scrollLeft = scroller.scrollLeft;
-        }
-      }
-    };
-
-    // Bidirectional scroll mirroring. The lock prevents a→b→a feedback while
-    // still keeping the perceived motion frame-perfect (rAF, not setTimeout).
-    let scrollLock = false;
-    const linkScroll = (from, to) => {
-      from.addEventListener('scroll', () => {
-        if (scrollLock) return;
-        scrollLock = true;
-        to.scrollLeft = from.scrollLeft;
-        requestAnimationFrame(() => { scrollLock = false; });
-      }, { passive: true });
-    };
-    linkScroll(scroller, phantom);
-    linkScroll(phantom, scroller);
-
-    // ResizeObserver catches viewport resize, font-load reflow, and any future
-    // case where the table's intrinsic width shifts. Falls back to window
-    // resize for environments without RO support.
-    if (typeof ResizeObserver === 'function') {
-      new ResizeObserver(sync).observe(scroller);
-    } else {
-      window.addEventListener('resize', sync);
-    }
-
-    // Browsers settle table layout asynchronously — measure on the next frame.
-    requestAnimationFrame(sync);
-  }
-
   function init() {
     if (typeof leaderboardCompanies === 'undefined') {
       console.error('leaderboardCompanies is not defined — make sure leaderboard-data.js is loaded first.');
@@ -241,7 +193,6 @@
 
     renderRows(sortedRows());
     updateHeaderIndicators();
-    setupStickyScrollbar();
   }
 
   if (document.readyState === 'loading') {

@@ -41,34 +41,23 @@
             word-break: break-word;
             margin-bottom: 4px;
         }
-        /* Hide the native horizontal scrollbar on the table's scroll container.
-           The phantom sticky scrollbar below replaces it — showing both was
-           visually confusing. The element still scrolls programmatically and
-           via trackpad/wheel, just without a visible bar of its own. */
-        #leaderboard-scroll { scrollbar-width: none; -ms-overflow-style: none; }
-        #leaderboard-scroll::-webkit-scrollbar { display: none; }
-
-        /* Phantom horizontal scrollbar that hugs the bottom of the viewport
-           so users don't have to scroll to row 48 to find a scrollbar. */
-        .leaderboard-sticky-scroll {
-            overflow-x: auto;
-            overflow-y: hidden;
-            height: 14px;
-            background: white;
-            border-top: 1px solid rgb(243 244 246);
-            z-index: 5;
-            scrollbar-width: thin;
-            scrollbar-color: rgb(156 163 175) transparent;
+        /* Bounded, scrollable table area — same shape as the original Google
+           Sheets iframe. Both scrollbars live at the box's edges, so they're
+           always reachable regardless of where you are in the row list. */
+        .leaderboard-scroll-area {
+            overflow: auto;
+            max-height: min(720px, 70vh);
         }
-        .leaderboard-sticky-scroll::-webkit-scrollbar { height: 10px; }
-        .leaderboard-sticky-scroll::-webkit-scrollbar-track { background: rgb(249 250 251); }
-        .leaderboard-sticky-scroll::-webkit-scrollbar-thumb {
-            background: rgb(156 163 175);
-            border-radius: 5px;
-            border: 2px solid rgb(249 250 251);
+        /* Sticky column headers so they stay in view while scrolling rows.
+           Each <th> needs its own opaque background since the row underneath
+           would otherwise show through during scroll. The Tailwind hover
+           utility wins because of pseudo-class specificity. */
+        .leaderboard-scroll-area thead th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: rgb(21 128 61); /* matches Tailwind bg-green-700 */
         }
-        .leaderboard-sticky-scroll::-webkit-scrollbar-thumb:hover { background: rgb(107 114 128); }
-        .leaderboard-sticky-scroll-track { height: 1px; }
         .progress-bar-container {
             margin-top: 4px;
             position: relative;
@@ -294,10 +283,8 @@
         </div>
 
 
-        <!-- Native leaderboard table (rendered from leaderboard-data.js).
-             `overflow-clip` (not `overflow-hidden`) so the inner sticky
-             scrollbar isn't trapped by an ancestor scroll container. -->
-        <section class="bg-white rounded-xl shadow-sm overflow-clip mb-6 sm:mb-8">
+        <!-- Native leaderboard table (rendered from leaderboard-data.js). -->
+        <section class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 sm:mb-8">
             <header class="px-4 sm:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                     <h2 class="text-base sm:text-lg font-semibold text-gray-900">Lean AI Native Companies</h2>
@@ -306,7 +293,7 @@
                     </p>
                 </div>
             </header>
-            <div class="overflow-x-auto" id="leaderboard-scroll">
+            <div class="leaderboard-scroll-area" id="leaderboard-scroll">
                 <table class="w-full text-sm whitespace-nowrap">
                     <thead class="bg-green-700 text-white text-xs uppercase tracking-wide">
                         <tr>
@@ -329,9 +316,6 @@
                     </thead>
                     <tbody id="leaderboard-tbody" class="divide-y divide-gray-100"></tbody>
                 </table>
-            </div>
-            <div class="leaderboard-sticky-scroll sticky bottom-0 hidden" id="leaderboard-sticky-scroll" aria-hidden="true">
-                <div class="leaderboard-sticky-scroll-track" id="leaderboard-sticky-track"></div>
             </div>
         </section>
 
