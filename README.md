@@ -54,6 +54,24 @@ The leaderboard tracks several key metrics including:
 
 We verify submissions through multiple sources including public records, company announcements, and direct confirmation from founders or company representatives. All data is cross-referenced for accuracy.
 
+## Run Locally
+
+The site is static HTML/JS — no build step, no dependencies. Pick whichever feels easiest:
+
+```bash
+# Python (preinstalled on macOS / most Linux distros)
+python3 -m http.server 8000
+# → http://localhost:8000
+
+# or Node, no install
+npx serve
+
+# or just open the file directly in your browser
+open index.html
+```
+
+To update a company's numbers or add a new one, edit [`leaderboard-data.js`](./leaderboard-data.js) and refresh — the table and the headline metric tiles both re-render from that single array.
+
 ## Contributing
 
 Know an AI Native company that should be listed? You can (anonymously):
