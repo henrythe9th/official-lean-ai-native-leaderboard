@@ -30,8 +30,8 @@
     return '<span class="text-gray-300">—</span>';
   }
 
-  // Deterministic per-name color so each company keeps the same avatar tint across renders.
-  function avatarFor(name) {
+  // Deterministic per-name color so each company keeps the same tint across renders.
+  function paletteFor(name) {
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -39,7 +39,39 @@
     }
     const hue = Math.abs(hash) % 360;
     const initial = name.replace(/[^A-Za-z0-9]/g, '').charAt(0).toUpperCase() || '?';
-    return `<span class="inline-flex items-center justify-center w-7 h-7 rounded-md text-xs font-semibold text-white shrink-0" style="background:hsl(${hue}, 55%, 42%)">${initial}</span>`;
+    return { bg: `hsl(${hue}, 55%, 42%)`, initial };
+  }
+
+  function domainFromUrl(url) {
+    try {
+      return new URL(url).hostname.replace(/^www\./, '');
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // Renders a logo cell: colored letter avatar with the company's favicon
+  // layered on top. If the favicon fails to load (or `logoUrl` is missing
+  // and there's no website), the letter avatar shows through.
+  function logoFor(company) {
+    const { bg, initial } = paletteFor(company.company);
+    const avatarBase = `<span class="relative inline-flex items-center justify-center w-7 h-7 rounded-md text-xs font-semibold text-white shrink-0 overflow-hidden" style="background:${bg}">`;
+    const initialEl = `<span aria-hidden="true">${initial}</span>`;
+
+    // Explicit override always wins.
+    if (company.logoUrl) {
+      return `${avatarBase}${initialEl}<img src="${escapeHTML(company.logoUrl)}" alt="" loading="lazy" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover">`+`</span>`;
+    }
+
+    // Favicon path — only if we have a website to derive a domain from.
+    const domain = company.website ? domainFromUrl(company.website) : null;
+    if (domain) {
+      const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`;
+      return `${avatarBase}${initialEl}<img src="${favicon}" alt="" loading="lazy" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover">`+`</span>`;
+    }
+
+    // No website, no override — letter avatar only.
+    return `${avatarBase}${initial}</span>`;
   }
 
   function escapeHTML(str) {
@@ -56,12 +88,20 @@
     return `<span class="text-xs text-gray-500 italic" title="${escapeHTML(source)}">Private</span>`;
   }
 
+  function renderCompanyName(company) {
+    const safe = escapeHTML(company.company);
+    if (company.website) {
+      return `<a href="${escapeHTML(company.website)}" target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-blue-600 hover:underline">${safe}</a>`;
+    }
+    return safe;
+  }
+
   function renderRow(company) {
     return `
       <tr class="hover:bg-gray-50 transition-colors">
         <td class="px-3 py-3 text-right tabular-nums text-gray-500">${company.rank}</td>
-        <td class="px-3 py-3">${avatarFor(company.company)}</td>
-        <td class="px-3 py-3 font-medium text-gray-900">${escapeHTML(company.company)}</td>
+        <td class="px-3 py-3">${logoFor(company)}</td>
+        <td class="px-3 py-3 font-medium">${renderCompanyName(company)}</td>
         <td class="px-3 py-3 text-gray-700">${escapeHTML(company.description)}</td>
         <td class="px-3 py-3 text-gray-700">${escapeHTML(company.location)}</td>
         <td class="px-3 py-3 text-right tabular-nums text-gray-900">${formatCurrency(company.annualRevenue)}</td>
