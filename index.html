@@ -37,14 +37,6 @@
                 padding: 20px;
             }
         }
-        .table-iframe {
-            width: 100%;
-            height: 800px;
-            border: none;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
         .metric-value {
             word-break: break-word;
             margin-bottom: 4px;
@@ -130,8 +122,11 @@
             }
         }
     </style>
-    <!-- Include progress calculator script -->
+    <!-- Leaderboard data + scripts. `leaderboard-data.js` must load first so
+         the calculator and table renderer can both read from it. -->
+    <script src="leaderboard-data.js"></script>
     <script src="progress-calculator.js"></script>
+    <script src="leaderboard-table.js" defer></script>
 </head>
 <body class="min-h-screen">
     <img src="https://leanaileaderboard.com/leanaileaderboard.png" alt="Lean AI Native Companies Leaderboard" class="social-preview-image" />
@@ -271,18 +266,41 @@
         </div>
 
 
-        <!-- Table iframe with loader -->
-        <div class="relative mb-6 sm:mb-8" style="min-height: 800px">
-            <div id="iframe-loader" class="absolute inset-0 z-10 bg-white rounded-xl flex flex-col items-center justify-center space-y-4">
-                <div class="animate-spin rounded-full h-10 sm:h-12 w-10 sm:w-12 border-4 border-gray-200 border-t-blue-500"></div>
-                <p class="text-gray-600 text-sm sm:text-base">Loading leaderboard data...</p>
+        <!-- Native leaderboard table (rendered from leaderboard-data.js) -->
+        <section class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 sm:mb-8">
+            <header class="px-4 sm:px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <h2 class="text-base sm:text-lg font-semibold text-gray-900">Lean AI Native Companies</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
+                        <span id="leaderboard-count">—</span> companies · click any column to sort
+                    </p>
+                </div>
+            </header>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm whitespace-nowrap">
+                    <thead class="bg-green-700 text-white text-xs uppercase tracking-wide">
+                        <tr>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="rank">#<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="px-3 py-3 w-9" aria-hidden="true"></th>
+                            <th class="leaderboard-th px-3 py-3 text-left cursor-pointer select-none hover:bg-green-800" data-field="company">Company<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-left cursor-pointer select-none hover:bg-green-800" data-field="description">Description<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-left cursor-pointer select-none hover:bg-green-800" data-field="location">Location<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="annualRevenue">Annual Revenue<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="employees"># Employees<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="revenuePerEmployee">Rev / Employee<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-center cursor-pointer select-none hover:bg-green-800" data-field="profitable">Profitable<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="totalFunding">Total Funding<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="valuation">Valuation<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="valuationPerEmployee">Val / Employee<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-right cursor-pointer select-none hover:bg-green-800" data-field="founded">Founded<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="leaderboard-th px-3 py-3 text-left cursor-pointer select-none hover:bg-green-800" data-field="lastUpdated">Last Updated<span class="sort-arrow ml-1 inline-block w-3 opacity-30"></span></th>
+                            <th class="px-3 py-3 text-center">Source</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-tbody" class="divide-y divide-gray-100"></tbody>
+                </table>
             </div>
-            <iframe 
-                src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1vMlwTJ8_Lty161T73uwnMzVxb48XzHxz9aPNla5OgCjd2yJ0HMfxEHGSv1OsyGOarWUYDcsJZfmk/pubhtml?widget=true&amp;headers=false" 
-                class="table-iframe"
-                onload="document.getElementById('iframe-loader').style.display = 'none';">
-            </iframe>
-        </div>
+        </section>
 
         <!-- Subscription Form -->
         <div class="bg-white rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
