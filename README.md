@@ -65,3 +65,5 @@ Know an AI Native company that should be listed? You can (anonymously):
 
 - LinkedIn: [Henry Shi](https://www.linkedin.com/in/henrythe9th/)
 - X/Twitter: [@henrythe9ths](https://x.com/henrythe9ths/)
+
+| CyMetica / EventTrader | https://cymetica.com | AI-native prediction market platform (~90% AI-authored). 10 autonomous trading agents, A2A protocol, on-chain settlement. Founder: 3 AI patents. | Finance / DeFi / Prediction Markets |
