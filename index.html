@@ -132,6 +132,7 @@
     </style>
     <!-- Include progress calculator script -->
     <script src="progress-calculator.js"></script>
+    <script src="leaderboard-status.js" defer></script>
 </head>
 <body class="min-h-screen">
     <img src="https://leanaileaderboard.com/leanaileaderboard.png" alt="Lean AI Native Companies Leaderboard" class="social-preview-image" />
@@ -177,7 +178,7 @@
 
     <main class="max-w-7xl mx-auto px-4 py-6 sm:py-8 mt-[110px] sm:mt-[50px]">
         <!-- About Section -->
-        <article class="bg-white rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
+        <article class="bg-white rounded-xl p-4 sm:p-6 mb-2 sm:mb-3">
             <h2 class="text-lg sm:text-xl font-semibold mb-4">About This Leaderboard - The Road to a "1-Person" Billion Dollar Company</h2>
             <p class="text-gray-600 mb-4">
                 I'm a <a href="https://www.linkedin.com/in/henrythe9th/" target="_blank" class="text-gray-600 hover:text-gray-800 underline">repeat founder</a> who's built a $100MM+ ARR startup the old fashioned way by hiring hundreds of people and raising hundreds of millions of VC funding.
@@ -207,6 +208,20 @@
                 </div>
             </div>
         </article>
+
+        <!-- Live leaderboard freshness, derived from the published Sheet -->
+        <div id="leaderboard-status"
+             class="flex min-h-10 flex-wrap items-center gap-x-2 gap-y-1 px-1 mb-2 sm:mb-3 text-xs sm:text-sm text-gray-500"
+             role="status"
+             aria-live="polite"
+             aria-busy="true">
+            <span id="leaderboard-status-loader" class="relative flex h-2.5 w-2.5 shrink-0" aria-hidden="true">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60"></span>
+                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-600"></span>
+            </span>
+            <span id="leaderboard-status-dot" class="hidden h-2 w-2 shrink-0 rounded-full bg-green-600 ring-4 ring-green-100" aria-hidden="true"></span>
+            <span id="leaderboard-status-text">Checking the latest data snapshot…</span>
+        </div>
 
         <!-- Metrics -->
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
