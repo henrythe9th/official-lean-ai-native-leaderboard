@@ -32,8 +32,17 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             overflow: hidden;
         }
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
         @media (min-width: 640px) {
             .metric-box {
+                padding: 20px;
+            }
+            .status-card {
                 padding: 20px;
             }
         }
@@ -211,7 +220,7 @@
 
         <!-- Live leaderboard freshness, derived from the published Sheet -->
         <div id="leaderboard-status"
-             class="metric-box flex flex-wrap items-center gap-x-2 gap-y-1 mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500"
+             class="status-card flex flex-wrap items-center gap-x-2 gap-y-1 mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500"
              role="status"
              aria-live="polite"
              aria-busy="true">
