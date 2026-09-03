@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="image" property="og:image" content="https://leanaileaderboard.com/leanaileaderboard.png">
     <meta name="description" content="Tracking the rise of lean AI native companies revolutionizing the startup world. Discover companies generating billions with minimal teams, pioneering the future of 1-person startups.">
     <meta name="keywords" content="lean AI native companies, startup leaderboard, billion dollar startups, 1-person startups, AI companies, future unicorns">
+    <meta name="author" content="Henry Shi">
+    <link rel="canonical" href="https://leanaileaderboard.com/">
+
+    <!-- Open Graph (Facebook, LinkedIn, Slack, iMessage, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Lean AI Leaderboard">
+    <meta property="og:url" content="https://leanaileaderboard.com/">
     <meta property="og:title" content="Official Lean AI Native Companies Leaderboard">
     <meta property="og:description" content="Tracking the rise of lean AI native companies revolutionizing the startup world. Discover companies generating billions with minimal teams.">
-    <meta property="og:url" content="https://LeanAILeaderboard.com">
-    <meta property="og:type" content="website">
+    <!-- NOTE: keep og:image as a plain property= tag. X's parser keys a <meta> on its name= attribute when
+         one is present, so the old <meta name="image" property="og:image"> was read as an unknown "image"
+         tag and X dropped the image (LinkedIn/Facebook key on property=, which is why they were fine). -->
+    <meta property="og:image" content="https://leanaileaderboard.com/leanaileaderboard.png">
+    <meta property="og:image:secure_url" content="https://leanaileaderboard.com/leanaileaderboard.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1266">
+    <meta property="og:image:height" content="661">
+    <meta property="og:image:alt" content="Lean AI Native Companies Leaderboard">
+
+    <!-- X / Twitter card (explicit tags so X never has to fall back to og:*) -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="author" content="Henry Shi">
+    <meta name="twitter:title" content="Official Lean AI Native Companies Leaderboard">
+    <meta name="twitter:description" content="Tracking the rise of lean AI native companies revolutionizing the startup world. Discover companies generating billions with minimal teams.">
+    <meta name="twitter:image" content="https://leanaileaderboard.com/leanaileaderboard.png">
+    <meta name="twitter:image:alt" content="Lean AI Native Companies Leaderboard">
+    <meta name="twitter:creator" content="@henrythe9ths">
+
     <link rel="icon" href="https://fav.farm/🏆" />
     <title>Official Lean AI Native Companies Leaderboard: The Future of 1-Person Billion-Dollar Startups</title>
     <script src="https://cdn.tailwindcss.com"></script>
