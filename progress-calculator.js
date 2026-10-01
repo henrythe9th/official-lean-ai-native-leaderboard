@@ -1,16 +1,18 @@
-// Configuration for progress calculations and metrics
+// Official!A2:P69, October 1, 2026 (68 companies).
+// Revenue includes Halluminate's $10M conservative floor; see the page note.
+// Averages use numeric cells in H/M/G, including H's existing zero for Gumloop.
 const progressConfig = {
     totalRevenue: {
-        value: 6534200000
+        value: 6744200000
     },
     revenuePerEmployee: {
-        value: 30304704,
+        value: 29057601,
         maxValue: 100000000, // $100MM
         minValue: 0,
         reverseScale: false // Higher is better
     },
     valuationPerEmployee: {
-        value: 94338383,
+        value: 90391184,
         maxValue: 1000000000, // $1B
         minValue: 0,
         reverseScale: false // Higher is better
@@ -80,11 +82,11 @@ window.addEventListener('DOMContentLoaded', () => {
         if (metricBoxes.length >= 4) {
             // Total Revenue (1st box)
             metricBoxes[0].querySelector('.metric-value').textContent = 
-                formatCurrency(progressConfig.totalRevenue.value);
+                '≥' + formatCurrency(progressConfig.totalRevenue.value);
             
             // Revenue per employee (2nd box)
             metricBoxes[1].querySelector('.metric-value').textContent = 
-                formatCurrency(progressConfig.revenuePerEmployee.value);
+                '≥' + formatCurrency(progressConfig.revenuePerEmployee.value);
             updateProgressBar(
                 metricBoxes[1].querySelector('.progress-bar-fill'),
                 metricBoxes[1].querySelector('.progress-percentage'),
